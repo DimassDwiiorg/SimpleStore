@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dimzstore | Admin Control</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        body {
+            background-color: #0c0c0c;
+            color: #ffffff;
+            padding: 20px;
+        }
+        .admin-box {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #222;
+            margin-bottom: 30px;
+        }
+        .title {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #ff4e88;
+        }
+        .back-btn {
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        .form-section {
+            background: #121212;
+            border: 1px solid #1c1c1c;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 40px;
+        }
+        .form-section h3 {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.85rem;
+            color: #888;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            color: #fff;
+            border-radius: 6px;
+            outline: none;
+        }
+        .form-group input:focus {
+            border-color: #ff4e88;
+        }
+        .submit-btn {
+            padding: 10px 20px;
+            background: #ff4e88;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .submit-btn:hover {
+            background: #e03b73;
+        }
+        .product-list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #121212;
+            border: 1px solid #1c1c1c;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .item-details {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .item-thumb {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 4px;
+            background: #222;
+        }
+        .delete-btn {
+            background: none;
+            border: 1px solid #ff4444;
+            color: #ff4444;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        .delete-btn:hover {
+            background: #ff4444;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="admin-box">
+        <header>
+            <div class="title">DASHBOARD CONTROL DIMZSTORE</div>
+            <a href="index.html" class="back-btn">&larr; Lihat Toko Utama</a>
+        </header>
+
+        <div class="form-section">
+            <h3>Upload / Edit Produk Baru</h3>
+            <form id="product-form">
+                <div class="form-group">
+                    <label>Nama Barang</label>
+                    <input type="text" id="p-name" placeholder="Contoh: Hoodie Streetwear V1" required>
+                </div>
+                <div class="form-group">
+                    <label>Harga Barang (Angka saja tanpa titik/Rp)</label>
+                    <input type="number" id="p-price" placeholder="Contoh: 250000" required>
+                </div>
+                <div class="form-group">
+                    <label>URL Link Foto Produk</label>
+                    <input type="url" id="p-img" placeholder="Contoh: https://images.unsplash.com/..." required>
+                </div>
+                <button type="submit" class="submit-btn">SIMPAN PRODUK</button>
+            </form>
+        </div>
+
+        <h3>Katalog Produk Aktif</h3>
+        <div id="admin-products-list" style="margin-top:15px;">
+            </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+    <script>
+        // FITUR PROTEKSI PASSWORD
+        (function() {
+            const PASSWORD_RAHASIA = "dimassepuh123";
+            let sessionAuth = sessionStorage.getItem('admin_logged_in');
+            if (sessionAuth !== 'true') {
+                let inputPassword = prompt("Masukin Password Admin dimzstore:");
+                if (inputPassword === PASSWORD_RAHASIA) {
+                    sessionStorage.setItem('admin_logged_in', 'true');
+                } else {
+                    alert("Password salah!");
+                    window.location.href = "index.html";
+                }
+            }
+        })();
+
+        // Config Firebase asli
+        const firebaseConfig = {
+            apiKey: "AIzaSyBReOgcdc3ifJl757LFmJrX0n7Vf5-E0WA",
+            authDomain: "dimzstore-21d40.firebaseapp.com",
+            databaseURL: "https://dimzstore-21d40-default-rtdb.asia-southeast1.firebasedatabase.app/",
+            projectId: "dimzstore-21d40",
+            storageBucket: "dimzstore-21d40.firebasestorage.app",
+            messagingSenderId: "888836931835",
+            appId: "1:888836931835:web:2759e1806566131f96f05e"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        const form = document.getElementById('product-form');
+        const listContainer = document.getElementById('admin-products-list');
+
+        // Sinkronisasi data ke list admin
+        database.ref('products').on('value', (snapshot) => {
+            listContainer.innerHTML = '';
+            const data = snapshot.val();
+            
+            if(!data) {
+                listContainer.innerHTML = '<p style="color:#555; font-style:italic;">Belum ada produk aktif.</p>';
+                return;
+            }
+
+            Object.keys(data).forEach((key) => {
+                const p = data[key];
+                listContainer.innerHTML += `
+                    <div class="product-list-item">
+                        <div class="item-details">
+                            <img src="${p.img}" class="item-thumb">
+                            <div>
+                                <strong style="display:block;">${p.name}</strong>
+                                <span style="color:#ff4e88; font-size:0.9rem;">Rp ${parseInt(p.price).toLocaleString('id-ID')}</span>
+                            </div>
+                        </div>
+                        <button class="delete-btn" onclick="deleteProduct('${key}')">Hapus</button>
+                    </div>
+                `;
+            });
+        });
+
+        // Push data ke server cloud
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('p-name').value;
+            const price = document.getElementById('p-price').value;
+            const img = document.getElementById('p-img').value;
+
+            database.ref('products').push({
+                name: name,
+                price: price,
+                img: img
+            }).then(() => {
+                form.reset();
+                alert('Produk kesimpen permanen di cloud database ✅');
+            });
+        });
+
+        // Hapus data dari server cloud
+        window.deleteProduct = function(key) {
+            if(confirm('Yakin hapus dari server pusat, Dim?')) {
+                database.ref('products/' + key).remove();
+            }
+        }
+    </script>
+</body>
+</html>

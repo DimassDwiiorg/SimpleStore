@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dimzstore | Premium Store</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        body {
+            background-color: #0c0c0c;
+            color: #ffffff;
+            padding: 20px;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #222;
+            margin-bottom: 4px;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            color: #ffffff;
+            text-transform: uppercase;
+        }
+        .admin-link {
+            color: #777;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+        .admin-link:hover {
+            color: #ff4e88;
+        }
+        .hero {
+            padding: 60px 20px;
+            text-align: center;
+            background: linear-gradient(135deg, #161616 0%, #0c0c0c 100%);
+            border-radius: 12px;
+            margin-bottom: 40px;
+            border: 1px solid #1f1f1f;
+        }
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 800;
+        }
+        .hero p {
+            color: #888;
+            font-size: 1rem;
+        }
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        .product-card {
+            background: #121212;
+            border: 1px solid #1c1c1c;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            border-color: #333;
+        }
+        .product-img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            background: #1a1a1a;
+        }
+        .product-info {
+            padding: 20px;
+        }
+        .product-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+        .product-price {
+            color: #ff4e88;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        .buy-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background: #ffffff;
+            color: #000000;
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            text-align: center;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .buy-btn:hover {
+            background: #e0e0e0;
+        }
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            margin-top: 60px;
+            color: #444;
+            font-size: 0.85rem;
+            border-top: 1px solid #111;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">dimzstore</div>
+        <a href="admin.html" class="admin-link">Kelola Toko (Admin)</a>
+    </header>
+
+    <section class="hero">
+        <h1>CURATED PREMIUM ITEMS</h1>
+        <p>Eksklusif, Terbatas, Kualitas Bintang Lima.</p>
+    </section>
+
+    <main class="products-grid" id="products-container">
+        </main>
+
+    <footer>
+        &copy; 2026 dimzstore. Built by Dimas Dwi S. All Rights Reserved.
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+    <script>
+        // Config Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBReOgcdc3ifJl757LFmJrX0n7Vf5-E0WA",
+            authDomain: "dimzstore-21d40.firebaseapp.com",
+            databaseURL: "https://dimzstore-21d40-default-rtdb.asia-southeast1.firebasedatabase.app/",
+            projectId: "dimzstore-21d40",
+            storageBucket: "dimzstore-21d40.firebasestorage.app",
+            messagingSenderId: "888836931835",
+            appId: "1:888836931835:web:2759e1806566131f96f05e"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        const container = document.getElementById('products-container');
+
+        // Tarik data real-time
+        database.ref('products').on('value', (snapshot) => {
+            container.innerHTML = '';
+            const data = snapshot.val();
+            
+            if (!data) {
+                container.innerHTML = '<p style="color:#555; text-align:center; grid-column: 1/-1; padding: 40px 0;">Belum ada produk aktif nih. Silakan upload via halaman admin.</p>';
+                return;
+            }
+
+            Object.keys(data).forEach((key) => {
+                const p = data[key];
+                const formattedPrice = "Rp " + parseInt(p.price).toLocaleString('id-ID');
+                const waLink = `https://wa.me/6289504221721?text=Halo%20Dim!%20Gw%20mau%20order%20*${encodeURIComponent(p.name)}*%20dengan%20harga%20*${formattedPrice}*`;
+
+                container.innerHTML += `
+                    <div class="product-card">
+                        <img src="${p.img}" class="product-img" alt="${p.name}">
+                        <div class="product-info">
+                            <div class="product-title">${p.name}</div>
+                            <div class="product-price">${formattedPrice}</div>
+                            <a href="${waLink}" target="_blank" class="buy-btn">BUY NOW</a>
+                        </div>
+                    </div>
+                `;
+            });
+        });
+    </script>
+</body>
+</html>
