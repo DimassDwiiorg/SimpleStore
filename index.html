@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>dimzstore | Premium Store</title>
+    <title>sanzstore | Premium Store</title>
     <link rel="icon" type="image/jpeg" href="https://i.ibb.co.com/q4ycCzK/IMG-20260710-151255.jpg?v=1">
     <style>
         * {
@@ -125,7 +125,7 @@
 <body>
 
     <header>
-        <div class="logo">dimzstore</div>
+        <div class="logo">SANZ.STORE</div>
         <a href="admin.html" class="admin-link">Kelola Toko (Admin)</a>
     </header>
 
@@ -138,7 +138,7 @@
         </main>
 
     <footer>
-        &copy; 2026 dimzstore. Built by Dimas Dwi S. All Rights Reserved.
+        &copy; 2026 sanzstore. Built by Dimas Dwi S. All Rights Reserved.
     </footer>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -173,7 +173,7 @@
             Object.keys(data).forEach((key) => {
                 const p = data[key];
                 const formattedPrice = "Rp " + parseInt(p.price).toLocaleString('id-ID');
-                const waLink = `https://wa.me/6289504221721?text=Halo%20Dim!%20Gw%20mau%20order%20*${encodeURIComponent(p.name)}*%20dengan%20harga%20*${formattedPrice}*`;
+                const waLink = `https://wa.me/6289504221721?text=Halo%20Min!%20Gw%20mau%20order%20*${encodeURIComponent(p.name)}*%20dengan%20harga%20*${formattedPrice}*`;
 
                 container.innerHTML += `
                     <div class="product-card">
