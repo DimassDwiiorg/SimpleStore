@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+     <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>sanzstore | Admin Control</title>
-    <link rel="icon" type="image/jpeg" href="-">
+    <title>dimzstore | Admin Control</title>
+    <link rel="icon" type="image/png" href="PASTE_LINK_LOGO_LU_DI_SINI?v=2">
     <style>
         * {
             margin: 0;
@@ -13,7 +13,7 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
         body {
-            background-color: #0c0c0c;
+            background-color: #070a13;
             color: #ffffff;
             padding: 20px;
         }
@@ -26,13 +26,13 @@
             justify-content: space-between;
             align-items: center;
             padding: 20px 0;
-            border-bottom: 1px solid #222;
+            border-bottom: 1px solid #16223f;
             margin-bottom: 30px;
         }
         .title {
             font-size: 1.3rem;
             font-weight: 800;
-            color: #ff4e88;
+            color: #00d2ff;
         }
         .back-btn {
             color: #fff;
@@ -40,10 +40,10 @@
             font-size: 0.9rem;
         }
         .form-section {
-            background: #121212;
-            border: 1px solid #1c1c1c;
+            background: #0f172a;
+            border: 1px solid #1e293b;
             padding: 20px;
-            border-radius: 8px;
+            border-radius: 12px;
             margin-bottom: 40px;
         }
         .form-section h3 {
@@ -57,40 +57,41 @@
             display: block;
             margin-bottom: 5px;
             font-size: 0.85rem;
-            color: #888;
+            color: #64748b;
         }
         .form-group input {
             width: 100%;
             padding: 10px;
-            background: #1a1a1a;
-            border: 1px solid #333;
+            background: #1e293b;
+            border: 1px solid #334155;
             color: #fff;
-            border-radius: 6px;
+            border-radius: 8px;
             outline: none;
         }
         .form-group input:focus {
-            border-color: #ff4e88;
+            border-color: #0052ff;
         }
         .submit-btn {
             padding: 10px 20px;
-            background: #ff4e88;
+            background: linear-gradient(135deg, #0052ff 0%, #00d2ff 100%);
             color: #fff;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             font-weight: bold;
             cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 82, 255, 0.2);
         }
         .submit-btn:hover {
-            background: #e03b73;
+            opacity: 0.9;
         }
         .product-list-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: #121212;
-            border: 1px solid #1c1c1c;
+            background: #0f172a;
+            border: 1px solid #1e293b;
             padding: 15px;
-            border-radius: 8px;
+            border-radius: 12px;
             margin-bottom: 10px;
         }
         .item-details {
@@ -102,15 +103,15 @@
             width: 50px;
             height: 50px;
             object-fit: cover;
-            border-radius: 4px;
-            background: #222;
+            border-radius: 6px;
+            background: #1e293b;
         }
         .delete-btn {
             background: none;
             border: 1px solid #ff4444;
             color: #ff4444;
             padding: 5px 10px;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 0.8rem;
         }
@@ -124,7 +125,7 @@
 
     <div class="admin-box">
         <header>
-            <div class="title">DASHBOARD CONTROL SANZSTORE</div>
+            <div class="title">DASHBOARD CONTROL DIMZSTORE</div>
             <a href="index.html" class="back-btn">&larr; Lihat Toko Utama</a>
         </header>
 
@@ -136,7 +137,7 @@
                     <input type="text" id="p-name" placeholder="Contoh: Hoodie Streetwear V1" required>
                 </div>
                 <div class="form-group">
-                    <label>Harga Barang (Angka saja tanpa titik/Rp)</label>
+                    <label>Harga Barang (Angka saja)</label>
                     <input type="number" id="p-price" placeholder="Contoh: 250000" required>
                 </div>
                 <div class="form-group">
@@ -149,29 +150,29 @@
 
         <h3>Katalog Produk Aktif</h3>
         <div id="admin-products-list" style="margin-top:15px;">
-            </div>
+            <!-- Muncul otomatis lewat JavaScript -->
+        </div>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
     <script>
-        // FITUR PROTEKSI PASSWORD
+        // GATEWAY PASSWORD ADMIN
         (function() {
-            const PASSWORD_RAHASIA = "sanzzstr2026";
+            const PASSWORD_RAHASIA = "dimassepuh221"; 
             let sessionAuth = sessionStorage.getItem('admin_logged_in');
             if (sessionAuth !== 'true') {
                 let inputPassword = prompt("Masukin Password Admin dimzstore:");
                 if (inputPassword === PASSWORD_RAHASIA) {
                     sessionStorage.setItem('admin_logged_in', 'true');
                 } else {
-                    alert("Password salah!");
+                    alert("Password salah lekk!");
                     window.location.href = "index.html";
                 }
             }
         })();
 
-        // Config Firebase asli
         const firebaseConfig = {
             apiKey: "AIzaSyBReOgcdc3ifJl757LFmJrX0n7Vf5-E0WA",
             authDomain: "dimzstore-21d40.firebaseapp.com",
@@ -188,13 +189,12 @@
         const form = document.getElementById('product-form');
         const listContainer = document.getElementById('admin-products-list');
 
-        // Sinkronisasi data ke list admin
         database.ref('products').on('value', (snapshot) => {
             listContainer.innerHTML = '';
             const data = snapshot.val();
             
             if(!data) {
-                listContainer.innerHTML = '<p style="color:#555; font-style:italic;">Belum ada produk aktif.</p>';
+                listContainer.innerHTML = '<p style="color:#475569; font-style:italic;">Belum ada produk aktif.</p>';
                 return;
             }
 
@@ -206,7 +206,7 @@
                             <img src="${p.img}" class="item-thumb">
                             <div>
                                 <strong style="display:block;">${p.name}</strong>
-                                <span style="color:#ff4e88; font-size:0.9rem;">Rp ${parseInt(p.price).toLocaleString('id-ID')}</span>
+                                <span style="color:#00d2ff; font-size:0.9rem;">Rp ${parseInt(p.price).toLocaleString('id-ID')}</span>
                             </div>
                         </div>
                         <button class="delete-btn" onclick="deleteProduct('${key}')">Hapus</button>
@@ -215,10 +215,8 @@
             });
         });
 
-        // Push data ke server cloud
         form.addEventListener('submit', function(e) {
             e.preventDefault();
-
             const name = document.getElementById('p-name').value;
             const price = document.getElementById('p-price').value;
             const img = document.getElementById('p-img').value;
@@ -229,13 +227,12 @@
                 img: img
             }).then(() => {
                 form.reset();
-                alert('Produk kesimpen permanen di cloud database ✅');
+                alert('Produk kesimpen permanen di database ✅');
             });
         });
 
-        // Hapus data dari server cloud
         window.deleteProduct = function(key) {
-            if(confirm('Yakin hapus dari server pusat, Dim?')) {
+            if(confirm('Yakin hapus dari server pusat?')) {
                 database.ref('products/' + key).remove();
             }
         }
