@@ -28,6 +28,23 @@
             border-bottom: 1px solid #16223f;
             margin-bottom: 4px;
         }
+        .logo-text {
+    font-size: 1.5rem;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    text-decoration: none;
+    /* Efek gradasi warna biru neon ke cyan */
+    background: linear-gradient(135deg, #0052ff 0%, #00d2ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: transform 0.2s;
+    display: inline-block;
+}
+
+.logo-text:hover {
+    transform: scale(1.03); /* Efek membesar dikit pas disentuh/di-hover */
+}
+        
         .admin-link {
             color: #53699a;
             text-decoration: none;
@@ -128,10 +145,7 @@
 <body>
 
     <header>
-        <!-- Logo D.S. Lu nampang di pojok kiri atas halaman -->
-        <a href="index.html" style="text-decoration: none;">
-            <img src="PASTE_LINK_LOGO_LU_DI_SINI" alt="dimzstore logo" style="height: 35px; width: auto; object-fit: contain; display: block;">
-        </a>
+        <a href="index.html" class="logo-text">DIMZSTORE</a>
         <a href="admin.html" class="admin-link">Kelola Toko (Admin)</a>
     </header>
 
