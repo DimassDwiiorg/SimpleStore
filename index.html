@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>sanzstore | Premium Store</title>
-    <link rel="icon" type="image/jpeg" href="https://i.ibb.co.com/q4ycCzK/IMG-20260710-151255.jpg?v=1">
+    <title>dimzstore | Premium Store</title>
+    
+    <!-- Favicon dengan Cache Busting biar langsung berubah di kolom URL Chrome -->
+    <link rel="icon" type="image/png" href="PASTE_LINK_LOGO_LU_DI_SINI?v=2">
+    
     <style>
         * {
             margin: 0;
@@ -13,7 +16,7 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
         body {
-            background-color: #0c0c0c;
+            background-color: #070a13; /* Warna dasar Midnight Blue super gelap */
             color: #ffffff;
             padding: 20px;
         }
@@ -22,40 +25,38 @@
             justify-content: space-between;
             align-items: center;
             padding: 20px 0;
-            border-bottom: 1px solid #222;
+            border-bottom: 1px solid #16223f;
             margin-bottom: 4px;
         }
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 900;
-            letter-spacing: 2px;
-            color: #ffffff;
-            text-transform: uppercase;
-        }
         .admin-link {
-            color: #777;
+            color: #53699a;
             text-decoration: none;
             font-size: 0.9rem;
             transition: color 0.2s;
         }
         .admin-link:hover {
-            color: #ff4e88;
+            color: #00d2ff;
         }
         .hero {
             padding: 60px 20px;
             text-align: center;
-            background: linear-gradient(135deg, #161616 0%, #0c0c0c 100%);
-            border-radius: 12px;
+            background: linear-gradient(135deg, #0f172a 0%, #070a13 100%);
+            border-radius: 16px;
             margin-bottom: 40px;
-            border: 1px solid #1f1f1f;
+            border: 1px solid #1e293b;
+            box-shadow: 0 4px 30px rgba(0, 82, 255, 0.05); /* Glow biru tipis elegan */
         }
         .hero h1 {
             font-size: 2.5rem;
             margin-bottom: 10px;
             font-weight: 800;
+            letter-spacing: 1px;
+            background: linear-gradient(to right, #ffffff, #0084ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         .hero p {
-            color: #888;
+            color: #64748b;
             font-size: 1rem;
         }
         .products-grid {
@@ -64,21 +65,22 @@
             gap: 30px;
         }
         .product-card {
-            background: #121212;
-            border: 1px solid #1c1c1c;
-            border-radius: 12px;
+            background: #0f172a;
+            border: 1px solid #1e293b;
+            border-radius: 16px;
             overflow: hidden;
-            transition: transform 0.3s, border-color 0.3s;
+            transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
         }
         .product-card:hover {
             transform: translateY(-5px);
-            border-color: #333;
+            border-color: #0052ff;
+            box-shadow: 0 10px 25px rgba(0, 82, 255, 0.15);
         }
         .product-img {
             width: 100%;
             height: 280px;
             object-fit: cover;
-            background: #1a1a1a;
+            background: #1e293b;
         }
         .product-info {
             padding: 20px;
@@ -90,7 +92,7 @@
             color: #fff;
         }
         .product-price {
-            color: #ff4e88;
+            color: #00d2ff; /* Harga warna biru cyan terang biar kontras */
             font-size: 1.2rem;
             font-weight: 700;
             margin-bottom: 15px;
@@ -99,53 +101,58 @@
             display: block;
             width: 100%;
             padding: 12px;
-            background: #ffffff;
-            color: #000000;
+            background: linear-gradient(135deg, #0052ff 0%, #00d2ff 100%);
+            color: #ffffff;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             font-weight: 700;
             text-align: center;
             cursor: pointer;
             text-decoration: none;
-            transition: background 0.2s;
+            transition: opacity 0.2s;
+            box-shadow: 0 4px 15px rgba(0, 82, 255, 0.3);
         }
         .buy-btn:hover {
-            background: #e0e0e0;
+            opacity: 0.9;
         }
         footer {
             text-align: center;
             padding: 40px 0;
             margin-top: 60px;
-            color: #444;
+            color: #334155;
             font-size: 0.85rem;
-            border-top: 1px solid #111;
+            border-top: 1px solid #16223f;
         }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo">SANZ.STORE</div>
+        <!-- Logo D.S. Lu nampang di pojok kiri atas halaman -->
+        <a href="index.html" style="text-decoration: none;">
+            <img src="PASTE_LINK_LOGO_LU_DI_SINI" alt="dimzstore logo" style="height: 35px; width: auto; object-fit: contain; display: block;">
+        </a>
         <a href="admin.html" class="admin-link">Kelola Toko (Admin)</a>
     </header>
 
     <section class="hero">
         <h1>CURATED PREMIUM ITEMS</h1>
-        <p>Eksklusif, Terbatas, Kualitas Bintang Lima.</p>
+        <p>Eksklusif, Terbatas, Kualitas Bintang Lima ala Dimas.</p>
     </section>
 
     <main class="products-grid" id="products-container">
-        </main>
+        <!-- Produk otomatis tersinkron dari Firebase -->
+    </main>
 
     <footer>
-        &copy; 2026 sanzstore. Built by Dimas Dwi S. All Rights Reserved.
+        &copy; 2026 dimzstore. Built by Dimas Dwi S. All Rights Reserved.
     </footer>
 
+    <!-- Firebase SDK V8 -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
     <script>
-        // Config Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyBReOgcdc3ifJl757LFmJrX0n7Vf5-E0WA",
             authDomain: "dimzstore-21d40.firebaseapp.com",
@@ -160,20 +167,19 @@
         const database = firebase.database();
         const container = document.getElementById('products-container');
 
-        // Tarik data real-time
         database.ref('products').on('value', (snapshot) => {
             container.innerHTML = '';
             const data = snapshot.val();
             
             if (!data) {
-                container.innerHTML = '<p style="color:#555; text-align:center; grid-column: 1/-1; padding: 40px 0;">Belum ada produk aktif nih. Silakan upload via halaman admin.</p>';
+                container.innerHTML = '<p style="color:#475569; text-align:center; grid-column: 1/-1; padding: 40px 0;">Belum ada produk aktif nih lek. Silakan upload via halaman admin.</p>';
                 return;
             }
 
             Object.keys(data).forEach((key) => {
                 const p = data[key];
                 const formattedPrice = "Rp " + parseInt(p.price).toLocaleString('id-ID');
-                const waLink = `https://wa.me/6285141217966?text=Halo%20Min!%20Gw%20mau%20order%20*${encodeURIComponent(p.name)}*%20dengan%20harga%20*${formattedPrice}*`;
+                const waLink = `https://wa.me/628XXXXXXXXXX?text=Halo%20Dim!%20Gw%20mau%20order%20*${encodeURIComponent(p.name)}*%20dengan%20harga%20*${formattedPrice}*`;
 
                 container.innerHTML += `
                     <div class="product-card">
